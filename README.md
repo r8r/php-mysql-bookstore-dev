@@ -1,8 +1,8 @@
 # Bookstore 
 
-* Institution: 
-* Class: 
-* Year: 
+* Institution: FH OÖ Campus Hagenberg
+* Class: 17_SCR4ILV Scripting (SE.ba BB SS25) Gr. Rader
+* Year: 2025
 * Author: Elmar Putz <ep@studiomitte.com> & Mario Rader <mr@studiomitte.com>
 * Technology: PHP
 
@@ -20,6 +20,6 @@
 * Name: ```db```
 
 ## Code
-* Live: 
-* Git Repo: <https://github.com/r8r/php-mysql-bookstore-dev>
+* Live: <https://scr42.fhooe.netacademy.at/finder/>
+* Git Repo: <https://github.com/r8r/php-mysql-bookstore-dev/tree/fhooe-se-scm4-2025>
 
