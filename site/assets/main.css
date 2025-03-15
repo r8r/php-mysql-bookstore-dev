@@ -1,0 +1,26 @@
+body {
+  padding-top: 90px;
+}
+
+
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+
+.footer {
+  margin-top: 30px;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+label {
+  margin-bottom: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
