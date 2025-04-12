@@ -3,6 +3,7 @@
 namespace Data;
 use \Bookshop\Category;
 use \Bookshop\Book;
+use \Bookshop\User;
 
 /**
  * DataManager
@@ -49,9 +50,7 @@ class DataManager implements iDataManager {
 				break;
 			case 'users':
 				$data = [
-					/*
 					1 => new User(1, "scm4", "a8af855d47d091f0376664fe588207f334cdad22"), //USER = scm4; PASSWORD = scm4
-					*/
 				];
 				break;
 		}
@@ -75,6 +74,25 @@ class DataManager implements iDataManager {
 
 		return $result;
 	}
+	public static function getUserByUsername(string $userName) : ?User {
+		$result = null;
+		foreach (self::getMockData('users') as $user) {
+			if (strtolower($user->getUserName()) === strtolower($userName)) {
+				$result = $user;
+			}
+		}
+		return $result;
+	}
+	public static function getUserById(int $userId) : ?User {
+		$result = null;
+		foreach (self::getMockData('users') as $user) {
+			if ($user->getId() === $userId) {
+				$result = $user;
+			}
+		}
+		return $result;
+	}
+
 
 }
 
