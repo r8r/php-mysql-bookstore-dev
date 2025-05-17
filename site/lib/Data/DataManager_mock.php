@@ -92,6 +92,9 @@ class DataManager implements iDataManager {
 		}
 		return $result;
 	}
+	public static function createOrder(int $userId, array $bookIds, string $nameOnCard, string $cardNumber) : ?int {
+		return rand();
+	}
 
 
 }

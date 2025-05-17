@@ -2,6 +2,7 @@
 
 namespace Bookshop;
 use Bookshop\ShoppingCart;
+use Data\DataManager;
 
 class Controller extends BaseObject {
 
@@ -11,8 +12,12 @@ class Controller extends BaseObject {
 	public const ACTION_REMOVE = 'removeFromCart';
 	public const ACTION_LOGIN = 'login';
 	public const ACTION_LOGOUT = 'logout';
+	public const ACTION_ORDER = 'order';
 	public const USER_NAME = 'username';
 	public const USER_PASSWORD = 'password';
+	public const CC_NAME = 'nameOnCard';
+	public const CC_NUMBER = 'cardNumber';
+
 
 
 	private static $instance = false;
@@ -70,7 +75,56 @@ class Controller extends BaseObject {
 				AuthenticationManager::signOut();
 				Util::redirect();
 				break;
+
+			case self::ACTION_ORDER :
+				// check login status
+				$user = AuthenticationManager::getAuthenticatedUser();
+
+				if ($user == null) {
+					$this->forwardRequest(['Not logged in']);
+					break;
+				}
+
+				// check order success
+				if (!$this->processCheckout($_POST[self::CC_NAME], $_POST[self::CC_NUMBER])) {
+					$this->forwardRequest(['Checkout failed']);
+				}
+
+				//Util::redirect();
+				break;
 		}
+	}
+
+	protected function processCheckout(string $nameOnCard = null, string $cardNumber = null) : bool {
+
+		$errors = [];
+
+		$nameOnCard = trim($nameOnCard);
+		if ($nameOnCard == null || strlen($nameOnCard) == 0) {
+			$errors[] = 'Name on card cannot be empty.';
+		}
+
+		if ($cardNumber == null || strlen($cardNumber) != 16 || !ctype_digit($cardNumber)) {
+			$errors[] = 'Invalid card number. Card number must be 16 digits.';
+		}
+
+		if (sizeof($errors) > 0) {
+			$this->forwardRequest($errors);
+			return false;
+		}
+
+		$user = AuthenticationManager::getAuthenticatedUser();
+		$orderId = DataManager::createOrder($user->getId(), ShoppingCart::getAll(), $nameOnCard, $cardNumber);
+
+		if (!$orderId) {
+			$this->forwardRequest(['Could not create order']);
+			return false;
+		}
+
+		ShoppingCart::clear();
+		Util::redirect('index.php?view=success&orderId=' . rawurlencode($orderId));
+
+		return true;
 	}
 	
 	/**
@@ -89,7 +143,7 @@ class Controller extends BaseObject {
 
 		// optional - add errors to redirect and process them in view
 		if (count($errors) > 0) {
-			$_SESSION['errors'] = $errors;
+			$target .= '&errors=' . urlencode(serialize($errors));
 		}
 
 		//forward request to target

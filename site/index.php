@@ -1,4 +1,7 @@
 <?php
+
+use Data\DataManager;
+
 require_once('inc/bootstrap.php');
 
 include_once('views/partials/header.php');

@@ -5,7 +5,10 @@ use Bookshop\Util;
 
 $user = AuthenticationManager::getAuthenticatedUser();
 
-$errors = $_SESSION["errors"] ?? null;
+$errors = "";
+if (isset($_GET['errors'])) {
+  $errors = unserialize(urldecode($_GET["errors"]));
+}
 
 ?><!DOCTYPE html>
 <html>
