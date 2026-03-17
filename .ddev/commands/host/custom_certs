@@ -1,0 +1,20 @@
+#!/bin/bash
+
+##########################################
+## Usage: custom_certs
+# create a custom certificate using mkcert 
+# and copy it to .ddev/custom_certs 
+# - ddev uses it instead of 
+# auto certs. Useful if working on remote machine, 
+# certs can be installed in local cert storage 
+# and no warning will appear
+#############################################
+
+PATH_TO_CERT=.ddev/custom_certs/
+DOMAIN=${DDEV_SITENAME}.${DDEV_TLD}
+CRT_FILE=${PATH_TO_CERT}${DOMAIN}.crt
+KEY_FILE=${PATH_TO_CERT}${DOMAIN}.key
+
+mkdir -p ${PATH_TO_CERT}
+
+mkcert -cert-file ${CRT_FILE} -key-file ${KEY_FILE} "*.${DDEV_TLD}" ${CERT_DOMAINS} ${DOMAIN}
