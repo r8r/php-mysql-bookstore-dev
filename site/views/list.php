@@ -3,6 +3,7 @@
 use Bookshop\Book;
 use Bookshop\Category;
 use Data\DataManager;
+use Bookshop\Util;
 
 $categories = DataManager::getCategories();
 
@@ -30,27 +31,27 @@ require("views/partials/header.php");
 			categoryId=<?php echo
       $category->getId
       (); ?>">
-				<?php echo $category->getName(); ?>
+				<?php echo Util::escape($category->getName()); ?>
 			</a>
 		</li>
     <?php endforeach; ?>
 
   </ul>
 
-
 <?php
+$books = [];
 if (isset($_GET['categoryId'])) {
 	$books = DataManager::getBooksByCategory($_GET['categoryId']);
 }
+
+$_SESSION['sesstest'] = "funktioniert das?";
 ?>
 
 <?php
-  if (count($books) > 0) {
-    include(__DIR__ . "/partials/booklist.php");
-  }
-  ?>
-
-
+if (count($books) > 0) {
+  include(__DIR__ . "/partials/booklist.php");
+}
+?>
 
 
 <?php endif; ?>

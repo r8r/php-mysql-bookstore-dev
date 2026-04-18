@@ -1,5 +1,6 @@
 <?php
-//use Bookshop\ShoppingCart, Bookshop\Util;
+use Bookshop\Util;
+use Bookshop\ShoppingCart;
 ?>
 
 <table class="table">
@@ -22,21 +23,21 @@
 	<tbody>
 	<?php
 	foreach ($books as $book):
-		//$inCart = ShoppingCart::contains($book->getId());
+		$inCart = ShoppingCart::contains($book->getId());
 		?>
 		<tr>
 			<td><strong>
-					<?php echo ($book->getTitle()); ?>
+					<?php echo Util::escape($book->getTitle()); ?>
 				</strong>
 			</td>
 			<td>
-				<?php echo ($book->getAuthor()); ?>
+				<?php echo Util::escape($book->getAuthor()); ?>
 			</td>
 			<td>
 				<?php echo sprintf('%01.2f', ($book->getPrice())); ?>&nbsp;&euro;
 			</td>
 			<td class="add-remove">
-				<?php /* if ($inCart):  ?>
+				<?php if ($inCart):  ?>
 					<form method="post" action="<?php echo Util::action
 					(Bookshop\Controller::ACTION_REMOVE, array('bookId' => $book->getId())); ?>">
 						<button type="submit" role="button" class="btn btn-sm btn-info">
@@ -45,12 +46,12 @@
 					</form>
 				<?php else: ?>
 					<form method="post" action="<?php echo Util::action
-					(Bookshop\Controller::ACTION_ADD, array('bookId' => $book->getId())); ?>">
+					(Bookshop\Controller::ACTION_ADD, ['bookId' => $book->getId()]); ?>">
 						<button type="submit" role="button" class="btn btn-sm btn-success">
 							<span class="bi bi-cart-plus-fill" aria-hidden="true"></span>
 						</button>
 					</form>
-				<?php endif;*/ ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
